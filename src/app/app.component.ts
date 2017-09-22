@@ -37,11 +37,12 @@ export class AppComponent {
   constructor() {
     this.camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 1, 10000 );
     this.camera.position.z = 1000;
-
     this.scene = new THREE.Scene();
 
     this.textureLoader = new TextureLoader();
+
     let texturesLoaded = 0;
+
     for ( let i = 1; i < 5; i++ ) {
       this.textureLoader.load(
         '../assets/img/cat' + i + '.jpg',
@@ -62,6 +63,7 @@ export class AppComponent {
     console.log( this.renderer );
     e.preventDefault();
 
+    let objects = [];
     let raycaster = new THREE.Raycaster();
     let mouse = new THREE.Vector2();
     mouse.x = ( e.clientX / this.renderer.domElement.clientWidth ) * 2 - 1;
@@ -69,12 +71,12 @@ export class AppComponent {
 
     raycaster.setFromCamera( mouse, this.camera );
 
-    console.log(this.magicBallsObjects.length);
     let intersects = raycaster.intersectObjects( this.magicBallsObjects );
 
     console.log(intersects.length);
     if ( intersects.length > 0 ) {
       let clickedMagicBall = this.magicBallList[intersects[0].object.uuid];
+      clickedMagicBall.toggleRotation();
       console.log( clickedMagicBall );
     }
   };
